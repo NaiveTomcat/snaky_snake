@@ -21,7 +21,7 @@ private:
 	SnakeList self;
 	direct activeDirect;
 	direct newDirect;
-	terrType map[25][30];
+	terrType map[40][55];
 	void init();
 	bool move();
 	void end();

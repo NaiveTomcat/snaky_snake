@@ -4,13 +4,13 @@
 void Snake::init()
 {
 	//Initialize map
-	for (int i = 0; i < 25; i++)
+	for (int i = 0; i < 40; i++)
 	{
-		for (int j = 0; j < 30; j++)
+		for (int j = 0; j < 55; j++)
 		{
-			if (i == 0 || i == 24)
+			if (i == 0 || i == 39)
 				map[i][j] = wall;
-			else if (j == 0 || j == 29)
+			else if (j == 0 || j == 54)
 				map[i][j] = wall;
 			else
 				map[i][j] = air;
@@ -27,9 +27,9 @@ void Snake::init()
 	short tmp2;
 	for (int i = 0; i < 3; i++)
 	{
-		tmp1 = std::rand() % 25;
+		tmp1 = std::rand() % 40;
 		std::srand(std::rand());
-		tmp2 = std::rand() % 30;
+		tmp2 = std::rand() % 55;
 		std::srand(std::rand());
 		map[tmp1][tmp2] = food;
 	}
@@ -89,9 +89,9 @@ bool Snake::move()
 		else
 		{
 			short tmp1, tmp2;
-			tmp1 = std::rand() % 25;//spawn new food
+			tmp1 = std::rand() % 40;//spawn new food
 			std::srand(std::rand());
-			tmp2 = std::rand() % 30;
+			tmp2 = std::rand() % 55;
 			std::srand(std::rand());
 			map[tmp1][tmp2] = food;
 			map[nextHead.pos.Y][nextHead.pos.X] = air;
@@ -110,9 +110,9 @@ void Snake::drow()
 {
 	COORD coor;
 	//Print map
-	for (int i = 0; i < 25; i++)
+	for (int i = 0; i < 40; i++)
 	{
-		for (int j = 0; j < 30; j++)
+		for (int j = 0; j < 55; j++)
 		{
 			coor.X = j, coor.Y = i;
 			SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coor);
