@@ -7,10 +7,11 @@
 #include <conio.h>
 #include <iostream>
 
+
 class Snake
 {
 private:
-	enum direct { UP, RIGHT, DOWN, LEFT };
+	enum direct { UP=1, RIGHT=2, DOWN=3, LEFT=4 };
 	enum terrType { wall, food, air};
 	struct SnakeNode
 	{
@@ -25,7 +26,7 @@ private:
 	void init();
 	bool move();
 	void end();
-	void drow();
+	void draw();
 public:
 	void start();
 };
