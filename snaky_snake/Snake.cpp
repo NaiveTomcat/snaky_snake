@@ -37,7 +37,7 @@ void Snake::init()
 bool Snake::move()
 {
 	//Handle keydown
-	if (_kbhit())
+	if (_kbhit())      //Make game won't stuck if no one press the keyboard
 	{
 		char key;
 		key = _getch();
@@ -62,13 +62,14 @@ bool Snake::move()
 		newDirect = activeDirect;
 	
 	//Check direction
-	if (std::abs(int(newDirect) - int(activeDirect)) == 2)
-		newDirect = activeDirect;
+	if (std::abs(int(newDirect) - int(activeDirect)) == 2)  // Means new direction is opposite of current direction
+		newDirect = activeDirect;  // Reset direction
 	activeDirect = newDirect;
-	//Check collidsion
+	//Collidsion flags
 	bool isFood;
 	bool isWall;
 	bool biteself = false;
+	// Checkout new head position
 	SnakeNode nextHead = \
 		newDirect == UP ? \
 		SnakeNode{ {self.front().pos.X,\
@@ -81,35 +82,41 @@ bool Snake::move()
 		self.front().pos.Y + 1} }
 		:SnakeNode{ {self.front().pos.X - 1,\
 		self.front().pos.Y} };
+	// Check collision and food
 	isFood = map[nextHead.pos.Y][nextHead.pos.X] == food;
 	isWall = map[nextHead.pos.Y][nextHead.pos.X] == wall;
 	for (SnakeNode node : self)
 		biteself |= (nextHead.pos.X == node.pos.X \
 			&& nextHead.pos.Y == node.pos.Y);
+	//Main move code
 	if (!isWall && !biteself)
 	{
-		self.push_front(nextHead);
-		if (!isFood)
-			self.pop_back();//move forward
-		else
+		self.push_front(nextHead); // Move forward
+		if (!isFood)            // If not eat food
+			self.pop_back(); // Delete old tail
+		else               // If food eaten
 		{
+			// Spawn new food
 			short tmp1, tmp2;
-			tmp1 = std::rand() % 38 + 1;//spawn new food
+			tmp1 = std::rand() % 38 + 1;
 			std::srand(std::rand());
 			tmp2 = std::rand() % 53 + 1;
 			std::srand(std::rand());
 			map[tmp1][tmp2] = food;
+			// Delete eaten food
 			map[nextHead.pos.Y][nextHead.pos.X] = air;
 		}
 		return true;
 	}
 	else
-		return false;
+		return false; //If collide then sent signal to game func
 }
 void Snake::end()
 {
+	//Clear screen
 	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), COORD{ 0,0 });
 	system("cls");
+	//Print score
 	std::cout << "\n\n\nGAME OVER\nYOUR SCORE" << self.size();
 	std::cout << "\n\n\a\a\a";
 }
@@ -146,9 +153,6 @@ void Snake::start()
 		draw();
 		Sleep(500-3*self.size());
 	}
-		
-
 	end();
-
 }
 

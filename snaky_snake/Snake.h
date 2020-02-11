@@ -20,14 +20,14 @@ private:
 
 	typedef std::list<SnakeNode> SnakeList;
 	SnakeList self;
-	direct activeDirect;
-	direct newDirect;
+	direct activeDirect; // Current direction
+	direct newDirect;    // Next direction
 	terrType map[40][55];
-	void init();
-	bool move();
-	void end();
-	void draw();
+	void init();         // Initialize game
+	bool move();         // Move snake
+	void end();          // End game
+	void draw();         // Draw map and snake
 public:
-	void start();
+	void start();        //Start game
 };
 
