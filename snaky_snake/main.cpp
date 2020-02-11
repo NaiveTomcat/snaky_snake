@@ -2,7 +2,8 @@
 
 int main()
 {
-	std::cout << "\n\nPress N for new game and Q to quit.\n";
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), COORD{ 0,0 });
+	std::cout << "\n\n\n\n\nPress N for new game and Q to quit.\n";
 	char key = _getch();
 	while (key=='n'||key=='N')
 	{

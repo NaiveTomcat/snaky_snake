@@ -27,9 +27,9 @@ void Snake::init()
 	short tmp2;
 	for (int i = 0; i < 3; i++)
 	{
-		tmp1 = std::rand() % 40;
+		tmp1 = std::rand() % 38 + 1;
 		std::srand(std::rand());
-		tmp2 = std::rand() % 55;
+		tmp2 = std::rand() % 53 + 1;
 		std::srand(std::rand());
 		map[tmp1][tmp2] = food;
 	}
@@ -60,13 +60,15 @@ bool Snake::move()
 	}
 	else
 		newDirect = activeDirect;
-	activeDirect = newDirect;
+	
 	//Check direction
 	if (std::abs(int(newDirect) - int(activeDirect)) == 2)
 		newDirect = activeDirect;
+	activeDirect = newDirect;
 	//Check collidsion
 	bool isFood;
 	bool isWall;
+	bool biteself = false;
 	SnakeNode nextHead = \
 		newDirect == UP ? \
 		SnakeNode{ {self.front().pos.X,\
@@ -81,7 +83,10 @@ bool Snake::move()
 		self.front().pos.Y} };
 	isFood = map[nextHead.pos.Y][nextHead.pos.X] == food;
 	isWall = map[nextHead.pos.Y][nextHead.pos.X] == wall;
-	if (!isWall)
+	for (SnakeNode node : self)
+		biteself |= (nextHead.pos.X == node.pos.X \
+			&& nextHead.pos.Y == node.pos.Y);
+	if (!isWall && !biteself)
 	{
 		self.push_front(nextHead);
 		if (!isFood)
@@ -89,9 +94,9 @@ bool Snake::move()
 		else
 		{
 			short tmp1, tmp2;
-			tmp1 = std::rand() % 40;//spawn new food
+			tmp1 = std::rand() % 38 + 1;//spawn new food
 			std::srand(std::rand());
-			tmp2 = std::rand() % 55;
+			tmp2 = std::rand() % 53 + 1;
 			std::srand(std::rand());
 			map[tmp1][tmp2] = food;
 			map[nextHead.pos.Y][nextHead.pos.X] = air;
@@ -103,10 +108,12 @@ bool Snake::move()
 }
 void Snake::end()
 {
-	std::cout << "\fGAME OVER\nYOUR SCORE" << self.size();
+	SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), COORD{ 0,0 });
+	system("cls");
+	std::cout << "\n\n\nGAME OVER\nYOUR SCORE" << self.size();
 	std::cout << "\n\n\a\a\a";
 }
-void Snake::drow()
+void Snake::draw()
 {
 	COORD coor;
 	//Print map
@@ -117,7 +124,7 @@ void Snake::drow()
 			coor.X = j, coor.Y = i;
 			SetConsoleCursorPosition(GetStdHandle(STD_OUTPUT_HANDLE), coor);
 			if (map[i][j] == wall)
-				printf("X");
+				printf("▉");
 			else if (map[i][j] == food)
 				printf("0");
 			else
@@ -136,7 +143,7 @@ void Snake::start()
 {
 	init();
 	while (move()) {
-		drow();
+		draw();
 		Sleep(500-3*self.size());
 	}
 		
